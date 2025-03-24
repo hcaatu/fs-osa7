@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom'
+import { 
+  BrowserRouter as Router, 
+  Routes, Route, Link, useParams, useNavigate
+} from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -52,6 +55,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+  const navigate = useNavigate()
 
 
   const handleSubmit = (e) => {
@@ -62,6 +66,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    navigate('/')
   }
 
   return (
@@ -91,7 +96,21 @@ const Anecdote = ({ anecdotes }) => {
   const anecdote = anecdotes.find(a => a.id === Number(id))
   return (
     <div>
-      <h3>{anecdote.content}</h3>
+      <h2>{anecdote.content}</h2>
+      <h3>{anecdote.author}</h3>
+      has {anecdote.votes} votes<br></br>
+      for more info, go to <a href={anecdote.info}>{anecdote.info}</a><br></br>
+      <br></br>
+    </div>
+  )
+}
+
+const Notification = ({ message }) => {
+  return (
+    <div>
+      {message && <div>
+        {message}
+        </div>}
     </div>
   )
 }
@@ -114,11 +133,15 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`Created new anecdote called '${anecdote.content}'`)
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   const anecdoteById = (id) =>
@@ -138,7 +161,8 @@ const App = () => {
   return (
     <Router>
       <h1>Software anecdotes</h1>
-      <Menu />
+      <Menu /> 
+      <Notification message={notification}/>
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
