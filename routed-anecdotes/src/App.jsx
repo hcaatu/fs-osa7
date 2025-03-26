@@ -70,23 +70,34 @@ const CreateNew = (props) => {
     navigate('/')
   }
 
+  const resetFields = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
+  const { reset: _1, ...contentFields } = content
+  const { reset: _2, ...authorFields } = author
+  const { reset: _3, ...infoFields } = info
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...contentFields} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...authorFields} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...infoFields} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button type='reset' onClick={resetFields}>reset</button>
       </form>
     </div>
   )
