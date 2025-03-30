@@ -171,7 +171,8 @@ const App = () => {
   }
 
   return (
-    <Router>
+    <div className='container'>
+      <Router>
       <h1>Software anecdotes</h1>
       <Menu /> 
       <Notification message={notification}/>
@@ -182,7 +183,9 @@ const App = () => {
         <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
       </Routes>
       <Footer />
-    </Router>
+      </Router>
+    </div>
+    
   )
 }
 
