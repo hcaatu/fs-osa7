@@ -17,3 +17,10 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.navbar {
+  background: darkgrey;
+  border-style: hidden;
+  border-radius: 5px;
+  padding: 10px;
+}

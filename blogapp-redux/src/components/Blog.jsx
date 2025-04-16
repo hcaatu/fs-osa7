@@ -1,63 +1,69 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  updateAndSaveBlog,
+  deleteBlog,
+  initializeBlogs,
+} from '../reducers/blogReducer'
+import { useParams } from 'react-router-dom'
 
-const Blog = ({ blog, updateBlog, removeBlog, user }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
+const Blog = () => {
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
+
+  const id = useParams().id
+  const blog = blogs.find((blog) => blog.id === id)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [])
+
+  if (!blog) {
+    return null
   }
 
-  const addLikes = (event) => {
+  const addLike = (event) => {
     event.preventDefault()
-    updateBlog(blog)
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+    try {
+      dispatch(updateAndSaveBlog(updatedBlog))
+    } catch (exception) {
+      console.log(exception)
+    }
   }
 
-  const deleteBlog = (event) => {
+  const removeBlog = (event) => {
     event.preventDefault()
-    removeBlog(blog)
+    if (window.confirm(`Remove blog ${blog.title} ${blog.author}?`)) {
+      try {
+        dispatch(deleteBlog(blog))
+      } catch (exception) {
+        console.log(exception)
+      }
+    }
   }
-
-  const [visible, setVisible] = useState(false)
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
-
-  const titleView = { display: visible ? 'none' : '' }
-  const infoView = { display: visible ? '' : 'none' }
 
   return (
-    <div style={blogStyle} className="blog">
-      <div style={titleView}>
+    <div>
+      <h2>
         {blog.title} {blog.author}
-        <button onClick={toggleVisibility}>view</button>
-      </div>
-      <div style={infoView}>
-        {blog.title} {blog.author}
-        <button onClick={toggleVisibility}>hide</button>
-        <br></br>
-        {blog.url}
-        <br></br>
-        likes {blog.likes}
-        <button onClick={addLikes}>like</button>
-        <br></br>
-        {blog.user.name}
-        {user.username === blog.user.username && (
-          <button onClick={deleteBlog}>remove</button>
-        )}
-      </div>
+      </h2>
+      {blog.url}
+      <br></br>
+      likes {blog.likes}
+      <button onClick={addLike}>like</button>
+      <br></br>
+      {blog.user.name}
+      {!user && <div></div>}
+      {user && user.username === blog.user.username && (
+        <button onClick={removeBlog}>remove blog</button>
+      )}
     </div>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  updateBlog: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
 }
 
 export default Blog
