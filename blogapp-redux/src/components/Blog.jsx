@@ -4,8 +4,10 @@ import {
   updateAndSaveBlog,
   deleteBlog,
   initializeBlogs,
+  postComment,
 } from '../reducers/blogReducer'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Blog = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -14,6 +16,7 @@ const Blog = () => {
   const id = useParams().id
   const blog = blogs.find((blog) => blog.id === id)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -36,16 +39,36 @@ const Blog = () => {
     }
   }
 
+  const addComment = (event) => {
+    event.preventDefault()
+    const comment = {
+      content: event.target.content.value,
+    }
+    event.target.content.value = ''
+
+    try {
+      dispatch(postComment(comment, blog.id))
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
   const removeBlog = (event) => {
     event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title} ${blog.author}?`)) {
       try {
+        dispatch(
+          setNotification(`Removed blog ${blog.title} ${blog.author}`, 3)
+        )
         dispatch(deleteBlog(blog))
+        navigate('/blogs')
       } catch (exception) {
         console.log(exception)
       }
     }
   }
+
+  console.log(blog.comments)
 
   return (
     <div>
@@ -57,11 +80,21 @@ const Blog = () => {
       likes {blog.likes}
       <button onClick={addLike}>like</button>
       <br></br>
-      {blog.user.name}
+      Added by {blog.user.name}
       {!user && <div></div>}
       {user && user.username === blog.user.username && (
         <button onClick={removeBlog}>remove blog</button>
       )}
+      <h3>Comments</h3>
+      <form onSubmit={addComment}>
+        <input type="text" name="content"></input>
+        <button type="submit">add comment</button>
+      </form>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={Math.random() * 100000}>{comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
