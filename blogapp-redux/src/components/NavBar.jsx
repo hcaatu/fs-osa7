@@ -2,22 +2,51 @@ import { Link } from 'react-router-dom'
 import Login from './Login'
 
 const NavBar = () => {
-  const padding = {
-    padding: 5,
+  const style = {
+    border: 'solid',
+    padding: 7,
+    borderWidth: 5,
+    borderRadius: 5,
+    borderColor: 'CornflowerBlue',
+    background: 'CornflowerBlue',
+    color: 'white',
   }
 
   return (
-    <div className="navbar">
-      <Link style={padding} to="/">
-        home
-      </Link>
-      <Link style={padding} to="/blogs">
-        blogs
-      </Link>
-      <Link style={padding} to="/users">
-        users
-      </Link>
-      <Login />
+    <div class="box">
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <Link to="/">
+            <h1 class="subtitle is-6" style={style}>
+              Home
+            </h1>
+          </Link>
+        </div>
+        <div class="level-item has-text-centered">
+          <Link to="/blogs">
+            <h1 class="subtitle is-6" style={style}>
+              Blogs
+            </h1>
+          </Link>
+        </div>
+        <div class="level-item has-text-centered">
+          <Link to="/users">
+            <h1 class="subtitle is-6" style={style}>
+              Users
+            </h1>
+          </Link>
+        </div>
+        <div class="level-item has-text-centered">
+          <p> </p>
+        </div>
+        <div class="level-item has-text-centered"></div>
+        <div class="level-item has-text-centered"></div>
+        <div class="level-item has-text-centered"></div>
+
+        <div class="level-right">
+          <Login />
+        </div>
+      </nav>
     </div>
   )
 }

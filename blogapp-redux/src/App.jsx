@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom'
 
 import Blog from './components/Blog'
 import BlogList from './components/BlogList'
@@ -7,28 +12,48 @@ import Users from './components/Users'
 import UserInfo from './components/UserInfo'
 import NavBar from './components/NavBar'
 import LoginForm from './components/LoginForm'
+import Home from './components/Home'
+import { useSelector } from 'react-redux'
+
+const margin = {
+  marginTop: 12,
+  marginBottom: 12,
+}
 
 const App = () => {
+  const user = useSelector((state) => state.user)
   return (
-    <Router>
-      <NavBar />
+    <div class="container is-max-tablet">
+      <Router>
+        <NavBar />
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h1 class="title is-2" style={margin}>
+                Blog App
+              </h1>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <Notification />
+            </div>
+          </div>
+        </div>
 
-      <h2>Blog App</h2>
-
-      <Notification />
-
-      <Routes>
-        <Route path="/blogs" element={<BlogList />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<UserInfo />} />
-        <Route path="/blogs/:id" element={<Blog />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route
-          path="/"
-          element={<p>Redux Blog App for Full Stack Open part 7</p>}
-        />
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/blogs" element={<BlogList />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<UserInfo />} />
+          <Route path="/blogs/:id" element={<Blog />} />
+          <Route
+            path="/login"
+            element={user ? <Navigate replace to="/blogs" /> : <LoginForm />}
+          />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
+    </div>
   )
 }
 

@@ -21,10 +21,18 @@ const Login = () => {
   }
 
   const logoutForm = () => (
-    <em>
-      <e>{user.name} logged in </e>
-      <button onClick={handleLogout}>logout</button>
-    </em>
+    <div class="level">
+      <div class="level-item">
+        <p>
+          <strong>{user.name} </strong> logged in
+        </p>
+      </div>
+      <div class="level-item">
+        <button class="button is-link" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
+    </div>
   )
 
   const padding = {
@@ -32,9 +40,14 @@ const Login = () => {
   }
 
   return (
-    <e style={padding}>
-      {!user && <Link to="/login">login</Link>} {user && logoutForm()}
-    </e>
+    <div style={padding}>
+      {!user && (
+        <Link to="/login">
+          <button class="button is-link">Login</button>
+        </Link>
+      )}{' '}
+      {user && logoutForm()}
+    </div>
   )
 }
 

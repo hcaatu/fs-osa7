@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { initializeUsers } from '../reducers/userReducer'
 
@@ -19,15 +19,25 @@ const UserInfo = () => {
 
   return (
     <div>
-      <h2>{user.name}</h2>
+      <h2 class="title is-5">{user.name}</h2>
       {user.blogs[0] && (
         <div>
-          added Blogs
-          <ul>
-            {user.blogs.map((blog) => (
-              <li key={blog.id}>{blog.title}</li>
-            ))}
-          </ul>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Added blogs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {user.blogs.map((blog) => (
+                <tr key={blog.id}>
+                  <td>
+                    <Link to={'/blogs/' + blog.id}>{blog.title}</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
       {!user.blogs[0] && <div>This user hasn't added any blogs</div>}

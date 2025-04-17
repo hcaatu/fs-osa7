@@ -29,7 +29,7 @@ export const loginUser = (credentials) => {
       blogService.setToken(user.token)
       dispatch(switchUser(user))
       if (user) {
-        dispatch(setNotification(`welcome ${user.username}`, 3))
+        dispatch(setNotification(`Welcome, ${user.name}`, 3))
       }
     } catch (exception) {
       console.log(exception)

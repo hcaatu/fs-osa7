@@ -9,11 +9,15 @@ const AddBlogForm = ({ createBlog }) => {
       setValue(event.target.value)
     }
 
-    const onSubmit = (event) => {
+    const onSubmit = () => {
       setValue('')
     }
 
-    const placeholder = name
+    const placeholder = name.charAt(0).toUpperCase() + name.slice(1)
+
+    const marginBottom = {
+      marginBottom: 10,
+    }
 
     return {
       type,
@@ -22,12 +26,22 @@ const AddBlogForm = ({ createBlog }) => {
       placeholder,
       onChange,
       onSubmit,
+      class: 'input',
+      style: marginBottom,
     }
   }
 
   const title = useField('title', 'text')
   const author = useField('author', 'text')
   const url = useField('url', 'text')
+  const [visible, setVisible] = useState()
+
+  const hiddenButton = { display: visible ? 'none' : '' }
+  const visibleContent = { display: visible ? '' : 'none', marginBottom: 15 }
+
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
 
   const addBlog = (event) => {
     event.preventDefault()
@@ -43,19 +57,53 @@ const AddBlogForm = ({ createBlog }) => {
     })
   }
 
+  const margin = {
+    marginRight: 10,
+  }
+
   return (
     <div>
-      <h2>Create a new blog</h2>
+      <div style={hiddenButton} class="block">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-3">Blogs</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button
+                class="button is-medium is-dark"
+                onClick={toggleVisibility}
+              >
+                Add blog
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={visibleContent} class="box">
+        <h2 class="title is-5">Create a new blog</h2>
 
-      <form onSubmit={addBlog}>
-        <input {...title}></input>
-        <br></br>
-        <input {...author}></input>
-        <br></br>
-        <input {...url}></input>
-        <br></br>
-        <button type="submit">Save</button>
-      </form>
+        <form onSubmit={addBlog}>
+          <input {...title}></input>
+          <br></br>
+          <input {...author}></input>
+          <br></br>
+          <input {...url}></input>
+          <br></br>
+          <button style={margin} class="button is-dark" type="submit">
+            Save
+          </button>
+          <button
+            class="button is-light"
+            type="button"
+            onClick={toggleVisibility}
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
     </div>
   )
 }
