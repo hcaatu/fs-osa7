@@ -50,7 +50,6 @@ export const logoutUser = () => {
 
 export const loginFromLocalStorage = (credentials) => {
   return async (dispatch) => {
-    console.log(credentials)
     blogService.setToken(credentials.token)
     dispatch(switchUser(credentials))
   }

@@ -4,7 +4,7 @@ const Notification = () => {
   const notification = useSelector((state) => state.notification)
 
   return (
-    <div>{notification && <div class="notification">{notification}</div>}</div>
+    <div>{notification && <div class="notification">{notification}</div>} </div>
   )
 }
 

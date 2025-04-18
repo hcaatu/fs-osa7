@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import Login from './Login'
+import { useSelector } from 'react-redux'
 
 const NavBar = () => {
+  const user = useSelector((state) => state.user)
+
   const style = {
     border: 'solid',
     padding: 7,
@@ -29,13 +32,15 @@ const NavBar = () => {
             </h1>
           </Link>
         </div>
-        <div class="level-item has-text-centered">
-          <Link to="/users">
-            <h1 class="subtitle is-6" style={style}>
-              Users
-            </h1>
-          </Link>
-        </div>
+        {user && (
+          <div class="level-item has-text-centered">
+            <Link to="/users">
+              <h1 class="subtitle is-6" style={style}>
+                Users
+              </h1>
+            </Link>
+          </div>
+        )}
         <div class="level-item has-text-centered">
           <p> </p>
         </div>
